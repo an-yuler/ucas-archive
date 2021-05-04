@@ -50,7 +50,7 @@ enum State
 typedef struct
 {
     VertexId src;
-    State state; 
+    State state; // 0 null, 1 in, 2 out
     VertexId data;
 } Message;
 

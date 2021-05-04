@@ -25,8 +25,6 @@ import java.io.StringReader;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.io.DoubleWritable;
-import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
@@ -37,15 +35,14 @@ import org.apache.hadoop.util.GenericOptionsParser;
 
 public class Hw2Part1{
 
+    private final static String SPLIT_CHAR = " ";
     // This is the Mapper class
     // reference: http://hadoop.apache.org/docs/r2.6.0/api/org/apache/hadoop/mapreduce/Mapper.html
     //
-    final private static String SPLIT_CHAR = " ";
     public static class CountMapper
             extends Mapper<Object, Text, Text, Text> {
 
         private Text keyout = new Text();
-//        private Text valout = new Text();
         private Text valout = new Text();
 
         @Override
@@ -55,6 +52,11 @@ public class Hw2Part1{
             while((line = reader.readLine()) != null){
                 String[] arr = line.split("\\s+");
                 if(arr.length != 3) {
+                    continue;
+                }
+                try {
+                    Double.parseDouble(arr[2]);
+                } catch (NumberFormatException e) {
                     continue;
                 }
                 keyout.set(arr[0] + SPLIT_CHAR + arr[1]);
